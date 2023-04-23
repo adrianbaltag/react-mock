@@ -6,5 +6,7 @@ const port = process.env.PORT || 5000;
 
 // initialize express
 const app = express();
+// add middleware
+app.use("/api/users", require("./routes/userRoutes"));
 // initialize
 app.listen(port, () => console.log(`Server running on port ${port}`));

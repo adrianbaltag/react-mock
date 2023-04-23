@@ -3,21 +3,23 @@ const express = require("express");
 // create a variable called router
 const router = express.Router();
 
-// create a route
-router.get("/", (req, res) => {
-  res.json({ message: "Get all users" });
-});
+// add the controller functions
+const {
+  getUsers,
+  postUser,
+  putUser,
+  deleteUser,
+} = require("../controllers/userController");
 
-router.post("/", (req, res) => {
-  res.json({ message: "Create a  user" });
-});
+// ====== create the routes for the CRUD functions ========
 
-router.put("/:id", (req, res) => {
-  res.json({ message: `Update user ${req.params.id}` });
-});
-
-router.delete("/:id", (req, res) => {
-  res.json({ message: `Delete  user ${req.params.id}` });
-});
-// export the router
+// router.get("/", getUsers);
+// router.post("/", postUser);
+// router.put("/:id", putUser);
+// router.delete("/:id", deleteUser);
+// chain the routes
+router.route("/").get(getUsers).post(postUser);
+router.route("/:id").put(putUser).delete(deleteUser);
+// ==========================================================
+// export the router to be used in the server.js file
 module.exports = router;

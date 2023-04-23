@@ -4,6 +4,7 @@
 // @route         GET /api/users
 // @access        Private
 const getUsers = (req, res) => {
+  console.log(req.body);
   res.json({ message: "Get all users" });
 };
 

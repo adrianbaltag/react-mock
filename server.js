@@ -1,11 +1,16 @@
 const express = require("express");
+const colors = require("colors");
 // allows us to have a .env file with files in it
 const dotenv = require("dotenv").config();
 // import error handler
 const { errorHandler } = require("./middleware/errorMiddleware");
+// import the database connection
+const connectDB = require("./config/db");
 // access to the port number(from .env file; if not available, use 5000 )
 const port = process.env.PORT || 5000;
 
+// connect to the database
+connectDB();
 // initialize express
 const app = express();
 

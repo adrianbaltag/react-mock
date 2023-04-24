@@ -41,14 +41,42 @@ const postHangout = asyncHandler(async (req, res) => {
 // @route         PUT /api/hangouts:id
 // @access        Private
 const putHangout = asyncHandler(async (req, res) => {
-  res.json({ message: `Update hangout ${req.params.id}` });
+  // update the hangout
+  const hangout = await Hangout.findById(req.params.id);
+  // check if the hangout exists
+  if (!hangout) {
+    res.status(404);
+    throw new Error("Hangout not found");
+  }
+  // update the hangout
+  const updatedHangout = await Hangout.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    // create it if it doesn't exist
+    { new: true }
+  );
+
+  res.json(updatedHangout);
 });
 
 // @description   Delete a hangout
 // @route         DELETE /api/hangouts:id
 // @access        Private
 const deleteHangout = asyncHandler(async (req, res) => {
-  res.json({ message: `Delete  hangout ${req.params.id}` });
+  // delete the hangout
+
+  const hangout = await Hangout.findById(req.params.id);
+  // check if the hangout exists
+  if (!hangout) {
+    res.status(404);
+    throw new Error("Hangout not found");
+  }
+  // delete the hangout
+  await hangout.deleteOne({ _id: req.params.id });
+
+  // need the id for the front end to delete the hangout from the state
+
+  res.json({ id: req.params.id });
 });
 //export the functions to be used in the routes
 module.exports = {

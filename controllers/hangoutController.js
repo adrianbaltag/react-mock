@@ -1,14 +1,20 @@
 // wraps asynchronous route handlers and automatically catches any errors thrown by the handler, passing them to the next error handling middleware or the default error handler, allowing you to handle errors in a consistent way
 const asyncHandler = require("express-async-handler");
 
+// import the hangout model
+const Hangout = require("../models/hangoutModel");
+const { error } = require("console");
+
 // ===== create CRUD user functions logic for the routes ===
 
 // @description   Get all hangouts
 // @route         GET /api/hangouts
 // @access        Private
 const getHangouts = asyncHandler(async (req, res) => {
-  console.log(req.body);
-  res.json({ message: "Get all hangouts" });
+  // get all hangouts from the database
+  const hangouts = await Hangout.find();
+  // send the hangouts to the client
+  res.json(hangouts);
 });
 
 // @description   Create a hangout
@@ -20,7 +26,15 @@ const postHangout = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Text is required");
   }
-  res.json({ message: "Create a  hangout" });
+  // create a new hangout
+  const hangout = await new Hangout({
+    text: req.body.text,
+  });
+
+  // save the hangout to the database
+  const savedHangout = await hangout.save();
+
+  res.json(savedHangout);
 });
 
 // @description   Update a hangout
